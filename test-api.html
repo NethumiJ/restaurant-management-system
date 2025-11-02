@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #output {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Backend API Test</h1>
+    
+    <div>
+        <button onclick="testGetProducts()">Get All Products</button>
+        <button onclick="testCreateProduct()">Create Sample Product</button>
+        <button onclick="testGetCategories()">Get Categories</button>
+        <button onclick="testCreateCategory()">Create Sample Category</button>
+    </div>
+    
+    <div id="output"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api';
+        const output = document.getElementById('output');
+
+        async function testGetProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/products`);
+                const data = await response.json();
+                output.textContent = 'Products:\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        async function testCreateProduct() {
+            try {
+                const product = {
+                    name: 'Sample Product',
+                    sku: 'SKU-' + Date.now(),
+                    description: 'This is a test product',
+                    price: 29.99,
+                    quantity: 50,
+                    reorderLevel: 10
+                };
+                
+                const response = await fetch(`${API_BASE}/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(product)
+                });
+                
+                const data = await response.json();
+                output.textContent = 'Created Product:\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        async function testGetCategories() {
+            try {
+                const response = await fetch(`${API_BASE}/categories`);
+                const data = await response.json();
+                output.textContent = 'Categories:\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        async function testCreateCategory() {
+            try {
+                const category = {
+                    name: 'Sample Category',
+                    description: 'This is a test category'
+                };
+                
+                const response = await fetch(`${API_BASE}/categories`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(category)
+                });
+                
+                const data = await response.json();
+                output.textContent = 'Created Category:\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+.admin-page {
+  padding: 28px;
+  background: linear-gradient(180deg, rgba(93,39,211,0.03), transparent 80%);
+}
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.admin-header h2 { font-size: 20px; color: var(--primary); font-weight: 800; }
+.admin-table-wrap { overflow: auto; background: var(--surface); padding: 18px; border-radius: 16px; box-shadow: 0 10px 30px rgba(16,24,40,0.04); }
+.admin-table { width: 100%; border-collapse: collapse; }
+.admin-table th, .admin-table td { padding: 12px 16px; border-bottom: 1px solid rgba(15,23,42,0.04); text-align: left; }
+.admin-table th { background: rgba(93,39,211,0.04); font-weight: 700; color: var(--primary); }
+.admin-table tbody tr:hover { background: rgba(93,39,211,0.03); transform: translateY(-2px); }
+.action-btn { margin-right: 8px; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(15,23,42,0.06); background: white; cursor: pointer; box-shadow: 0 6px 18px rgba(16,24,40,0.03); }
+.action-btn.danger { background: rgba(255,71,87,0.06); border-color: rgba(255,71,87,0.14); color: var(--danger); }
+.role-badge { padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; color: white; }
+.role-ADMIN { background: linear-gradient(90deg, var(--primary), var(--accent)); }
+.role-MANAGER { background: linear-gradient(90deg, #0ea5a4, #06b6d4); }
+.role-CHEF { background: linear-gradient(90deg, #f97316, #fb923c); }
+.role-USER { background: linear-gradient(90deg, #64748b, #94a3b8); }
+.btn-primary { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; }
+.btn-secondary { background: #f3f4f6; color: var(--muted); padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; }
+.admin-error { color: var(--danger); margin-bottom: 12px; font-weight: 700; }
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(2,6,23,0.6); display:flex; justify-content:center; align-items:center; z-index:50; }
+.modal-card { background: var(--surface); padding: 22px; border-radius: 14px; width: 460px; box-shadow: 0 20px 60px rgba(2,6,23,0.15); }
+.admin-form .form-row { margin-bottom: 12px; display:flex; flex-direction:column; }
+.admin-form label { font-size: 13px; color: #0f172a; margin-bottom: 6px; font-weight: 700; }
+.admin-form input[type="text"], .admin-form input[type="email"], .admin-form input[type="password"], .admin-form select { padding: 10px; border-radius: 10px; border: 1px solid rgba(15,23,42,0.06); background: #fff; }
+.modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
+
+.user-row-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(90deg,var(--primary),var(--accent)); color: white; display:flex; align-items:center; justify-content:center; font-weight:800; margin-right:10px; }
+
