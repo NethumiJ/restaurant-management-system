@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug Spring Boot",
+            "request": "launch",
+            "mainClass": "com.inventory.InventoryApplication",
+            "projectName": "inventory-backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
