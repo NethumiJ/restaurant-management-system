@@ -322,32 +322,32 @@ restaurant-management-system/
 
 ### Login Page
 
-![Login Page](./screenshots/login.png)
+![Login Page](./login.png)
 _User authentication with role-based access_
 
 ### Admin Dashboard
 
-![Admin Dashboard](./screenshots/admin-dashboard.png)
+![Admin Dashboard](./admin-dashboard.png)
 _Overview of system statistics and metrics_
 
 ### Inventory Management
 
-![Inventory](./screenshots/inventory.png)
+![Inventory](./inventory.png)
 _Manage products with stock tracking and alerts_
 
 ### Order Management
 
-![Orders](./screenshots/orders.png)
+![Orders](./orders.png)
 _Track and manage customer orders_
 
 ### Analytics Dashboard
 
-![Analytics](./screenshots/analytics.png)
+![Analytics](./analytics.png)
 _Visual reports and insights_
 
 ### User Management
 
-![User Management](./screenshots/user-management.png)
+![User Management](./user-management.png)
 _Admin panel for managing users and roles_
 
 > **Note**: To add screenshots, create a `screenshots` folder in the project root and add your images there.
