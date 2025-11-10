@@ -39,7 +39,11 @@ public class User {
     private Boolean active = true;
     
     @Column(name = "role")
+<<<<<<< HEAD
     private String role = "USER";
+=======
+    private String role = "CASHIER";
+>>>>>>> backend
     
     @Column(name = "force_password_reset")
     private Boolean forcePasswordReset = false;

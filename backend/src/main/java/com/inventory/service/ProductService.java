@@ -52,6 +52,27 @@ public class ProductService {
                 .toList();
     }
     
+<<<<<<< HEAD
+=======
+    public List<Product> getInventoryItems() {
+        return productRepository.findByType("INVENTORY_ITEM");
+    }
+    
+    public List<Product> getMenuItems() {
+        return productRepository.findByType("MENU_ITEM");
+    }
+    
+    public List<Product> getActiveMenuItems() {
+        return productRepository.findByTypeAndActive("MENU_ITEM", true);
+    }
+    
+    public List<Product> getLowStockInventoryItems() {
+        return productRepository.findByType("INVENTORY_ITEM").stream()
+                .filter(p -> p.getReorderLevel() != null && p.getQuantity() <= p.getReorderLevel())
+                .toList();
+    }
+    
+>>>>>>> backend
     @Transactional
     public Product createProduct(Product product) {
         if (productRepository.findBySku(product.getSku()).isPresent()) {
@@ -91,6 +112,12 @@ public class ProductService {
         if (productDetails.getActive() != null) {
             product.setActive(productDetails.getActive());
         }
+<<<<<<< HEAD
+=======
+        if (productDetails.getType() != null) {
+            product.setType(productDetails.getType());
+        }
+>>>>>>> backend
 
         return productRepository.save(product);
     }
