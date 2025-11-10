@@ -37,6 +37,12 @@ public class Order {
 	@Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
 	private BigDecimal unitPrice;
 
+	// Backwards-compatible column: some DBs have 'unit_cost' column from older schema.
+	// Persist the same value as `unitPrice` to satisfy existing schema constraints.
+	@NotNull
+	@Column(name = "unit_cost", nullable = false, precision = 10, scale = 2)
+	private BigDecimal unitCost;
+
 	@NotNull
 	@Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
 	private BigDecimal totalAmount;
@@ -57,6 +63,13 @@ public class Order {
 	@Column(length = 1000)
 	private String notes;
 
+	@Column(name = "order_type", nullable = false, length = 20)
+	private String orderType = "SUPPLIER_ORDER"; // CUSTOMER_ORDER or SUPPLIER_ORDER
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "created_by_user_id")
+	private User createdBy; // User who created the order (cashier for customer orders)
+
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
@@ -66,11 +79,14 @@ public class Order {
 	private LocalDateTime updatedAt;
 
 	public enum OrderStatus {
-		PENDING,
-		CONFIRMED,
-		SHIPPED,
-		DELIVERED,
-		CANCELLED
+		PENDING,      // Initial status for both order types
+		CONFIRMED,    // Supplier orders
+		SHIPPED,      // Supplier orders
+		DELIVERED,    // Supplier orders
+		PREPARING,    // Customer orders - chef is preparing
+		READY,        // Customer orders - ready for pickup/delivery
+		COMPLETED,    // Customer orders - completed
+		CANCELLED     // Both order types
 	}
 
 	public Order() {}
@@ -92,6 +108,9 @@ public class Order {
 
 	public BigDecimal getUnitPrice() { return unitPrice; }
 	public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }
+
+	public BigDecimal getUnitCost() { return unitCost; }
+	public void setUnitCost(BigDecimal unitCost) { this.unitCost = unitCost; }
 
 	public BigDecimal getTotalAmount() { return totalAmount; }
 	public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
@@ -116,4 +135,10 @@ public class Order {
 
 	public LocalDateTime getUpdatedAt() { return updatedAt; }
 	public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+	public String getOrderType() { return orderType; }
+	public void setOrderType(String orderType) { this.orderType = orderType != null ? orderType : "SUPPLIER_ORDER"; }
+
+	public User getCreatedBy() { return createdBy; }
+	public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
 }

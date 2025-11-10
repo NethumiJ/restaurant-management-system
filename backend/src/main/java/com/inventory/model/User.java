@@ -39,7 +39,7 @@ public class User {
     private Boolean active = true;
     
     @Column(name = "role")
-    private String role = "USER";
+    private String role = "CASHIER";
     
     @Column(name = "force_password_reset")
     private Boolean forcePasswordReset = false;
@@ -104,4 +104,3 @@ public class User {
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
-

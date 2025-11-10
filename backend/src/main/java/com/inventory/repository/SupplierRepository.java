@@ -13,4 +13,3 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
     List<Supplier> findByActive(Boolean active);
     List<Supplier> findByNameContainingIgnoreCase(String name);
 }
-

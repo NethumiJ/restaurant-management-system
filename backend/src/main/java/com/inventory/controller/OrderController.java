@@ -2,6 +2,8 @@ package com.inventory.controller;
 
 import com.inventory.model.Order;
 import com.inventory.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +16,30 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
     @GetMapping
-    public List<Order> getAll() {
+    public List<Order> getAll(@RequestParam(required = false) String type) {
+        if (type != null && "CUSTOMER".equalsIgnoreCase(type)) {
+            return orderService.getCustomerOrders();
+        } else if (type != null && "SUPPLIER".equalsIgnoreCase(type)) {
+            return orderService.getSupplierOrders();
+        }
         return orderService.getAll();
+    }
+    
+    @GetMapping("/customer-orders")
+    public List<Order> getCustomerOrders() {
+        return orderService.getCustomerOrders();
+    }
+    
+    @GetMapping("/customer-orders/pending")
+    public List<Order> getPendingCustomerOrders() {
+        return orderService.getPendingCustomerOrders();
     }
 
     @GetMapping("/{id}")
@@ -31,7 +49,12 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Order> create(@RequestBody Order order) {
+        logger.debug("Create order request: productId={}, quantity={}, supplierId={}",
+                order.getProduct() != null ? order.getProduct().getId() : null,
+                order.getQuantity(),
+                order.getSupplier() != null ? order.getSupplier().getId() : null);
         Order created = orderService.create(order);
+        logger.debug("Order created with id={}", created != null ? created.getId() : null);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -52,5 +75,3 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 }
-
-

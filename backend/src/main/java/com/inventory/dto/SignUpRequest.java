@@ -19,6 +19,8 @@ public class SignUpRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
+    
+    private String role = "CASHIER";
 
     public SignUpRequest() {}
 
@@ -27,6 +29,14 @@ public class SignUpRequest {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+    
+    public SignUpRequest(String firstName, String lastName, String email, String password, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role != null ? role : "CASHIER";
     }
 
     public String getFirstName() { return firstName; }
@@ -40,5 +50,7 @@ public class SignUpRequest {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+    
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role != null ? role : "CASHIER"; }
 }
-

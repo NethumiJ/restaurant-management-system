@@ -28,4 +28,3 @@ public class StatsService {
         return new StatsResponse(products, categories, suppliers, lowStock);
     }
 }
-

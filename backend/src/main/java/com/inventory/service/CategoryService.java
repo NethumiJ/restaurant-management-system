@@ -50,5 +50,5 @@ public class CategoryService {
     public void deleteCategory(Long id) {
         Category category = getCategoryById(id);
         categoryRepository.delete(category);
-    }
+    }
 }

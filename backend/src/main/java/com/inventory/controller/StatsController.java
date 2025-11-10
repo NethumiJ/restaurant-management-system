@@ -21,4 +21,3 @@ public class StatsController {
         return ResponseEntity.ok(statsService.getStats());
     }
 }
-

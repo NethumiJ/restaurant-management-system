@@ -41,12 +41,31 @@ public class ProductService {
     public List<Product> getProductsBySupplier(Long supplierId) {
         return productRepository.findBySupplierId(supplierId);
     }
+    
     public List<Product> searchProductsByName(String name) {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
     
     public List<Product> getLowStockProducts() {
         return productRepository.findAll().stream()
+                .filter(p -> p.getReorderLevel() != null && p.getQuantity() <= p.getReorderLevel())
+                .toList();
+    }
+    
+    public List<Product> getInventoryItems() {
+        return productRepository.findByType("INVENTORY_ITEM");
+    }
+    
+    public List<Product> getMenuItems() {
+        return productRepository.findByType("MENU_ITEM");
+    }
+    
+    public List<Product> getActiveMenuItems() {
+        return productRepository.findByTypeAndActive("MENU_ITEM", true);
+    }
+    
+    public List<Product> getLowStockInventoryItems() {
+        return productRepository.findByType("INVENTORY_ITEM").stream()
                 .filter(p -> p.getReorderLevel() != null && p.getQuantity() <= p.getReorderLevel())
                 .toList();
     }
@@ -90,6 +109,9 @@ public class ProductService {
         if (productDetails.getActive() != null) {
             product.setActive(productDetails.getActive());
         }
+        if (productDetails.getType() != null) {
+            product.setType(productDetails.getType());
+        }
 
         return productRepository.save(product);
     }
@@ -107,4 +129,3 @@ public class ProductService {
         return productRepository.save(product);
     }
 }
-

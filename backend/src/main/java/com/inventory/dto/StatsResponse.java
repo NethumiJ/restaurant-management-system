@@ -27,4 +27,3 @@ public class StatsResponse {
     public long getLowStock() { return lowStock; }
     public void setLowStock(long lowStock) { this.lowStock = lowStock; }
 }
-

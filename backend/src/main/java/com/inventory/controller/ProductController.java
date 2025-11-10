@@ -58,6 +58,24 @@ public class ProductController {
         return ResponseEntity.ok(productService.getLowStockProducts());
     }
     
+    @GetMapping("/inventory-items")
+    public ResponseEntity<List<Product>> getInventoryItems() {
+        return ResponseEntity.ok(productService.getInventoryItems());
+    }
+    
+    @GetMapping("/menu-items")
+    public ResponseEntity<List<Product>> getMenuItems(@RequestParam(required = false) Boolean active) {
+        if (active != null && active) {
+            return ResponseEntity.ok(productService.getActiveMenuItems());
+        }
+        return ResponseEntity.ok(productService.getMenuItems());
+    }
+    
+    @GetMapping("/inventory-items/low-stock")
+    public ResponseEntity<List<Product>> getLowStockInventoryItems() {
+        return ResponseEntity.ok(productService.getLowStockInventoryItems());
+    }
+    
     @PostMapping
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -84,5 +102,3 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 }
-
-

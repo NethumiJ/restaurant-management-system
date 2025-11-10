@@ -1,4 +1,3 @@
-
 package com.inventory.model;
 
 import jakarta.persistence.*;
@@ -54,6 +53,9 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
     
+    @Column(nullable = false, length = 20)
+    private String type = "INVENTORY_ITEM"; // MENU_ITEM or INVENTORY_ITEM
+    
     @Column(nullable = false)
     private Boolean active = true;
     
@@ -68,7 +70,7 @@ public class Product {
     public Product() {}
 
     public Product(Long id, String name, String description, String sku, BigDecimal price, Integer quantity,
-                   Integer reorderLevel, Category category, Supplier supplier, String imageUrl, Boolean active,
+                   Integer reorderLevel, Category category, Supplier supplier, String imageUrl, String type, Boolean active,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
@@ -80,6 +82,7 @@ public class Product {
         this.category = category;
         this.supplier = supplier;
         this.imageUrl = imageUrl;
+        this.type = type != null ? type : "INVENTORY_ITEM";
         this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -114,6 +117,9 @@ public class Product {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type != null ? type : "INVENTORY_ITEM"; }
 
     public Boolean getActive() { return active; }
     public void setActive(Boolean active) { this.active = active; }
