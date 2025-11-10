@@ -1,248 +1,502 @@
-# Inventory Management System - Backend
+# 🍽️ Restaurant Management System
 
-A Spring Boot backend application for inventory management with MySQL database integration.
+A full-stack restaurant management system built with **React** (frontend) and **Spring Boot** (backend). This system provides comprehensive inventory management, order tracking, analytics, and user management features for restaurants.
 
-## Features
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![React](https://img.shields.io/badge/React-19.1.1-61DAFB?logo=react)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-6DB33F?logo=springboot)
+![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql)
 
-- **Product Management**: Create, read, update, and delete products
-- **Category Management**: Organize products into categories
-- **Supplier Management**: Manage supplier information
-- **Low Stock Alerts**: Track products with low inventory
-- **Search & Filter**: Search products by name, category, or supplier
-- **RESTful API**: Complete REST API for frontend integration
-- **Data Validation**: Input validation using Bean Validation
-- **Exception Handling**: Global exception handling
-- **CORS Support**: Configured for React frontend
+---
 
-## Technology Stack
+## 📋 Table of Contents
 
-- **Java 17**
-- **Spring Boot 3.2.0**
-- **Spring Data JPA**
-- **MySQL 8.0**
-- **Maven**
-- **Lombok**
-- **Hibernate**
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Prerequisites](#-prerequisites)
+- [Installation & Setup](#️-installation--setup)
+- [Running the Application](#-running-the-application)
+- [Project Structure](#-project-structure)
+- [API Documentation](#-api-documentation)
+- [Screenshots](#-screenshots)
+- [User Roles](#-user-roles)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-## Prerequisites
+---
 
-- Java 17 or higher
-- Maven 3.6+
-- MySQL 8.0+ (or use Docker)
-- Docker (optional, for running MySQL in container)
+## ✨ Features
 
-## Database Setup
+### 🔐 Authentication & Authorization
 
-### Option 1: Using Docker (Recommended)
+- User registration and login with JWT authentication
+- Role-based access control (Admin, Manager, Cashier, Chef)
+- Password reset functionality
+- Protected routes based on user roles
 
-1. Start MySQL container:
-```bash
+### 📦 Inventory Management
+
+- Add, edit, and delete inventory items
+- Track stock levels with reorder thresholds
+- Low stock alerts and notifications
+- Price tracking and history
+- Product categories and supplier management
+
+### 📊 Dashboard & Analytics
+
+- Real-time statistics and metrics
+- Role-specific dashboards (Admin, Cashier, Chef)
+- Product analytics and reports
+- Visual charts and graphs
+
+### 🛒 Order Management
+
+- Create and track customer orders
+- Order status management
+- Order history and details
+
+### 👥 User Management (Admin)
+
+- Create and manage user accounts
+- Assign roles and permissions
+- View user activity logs
+
+### 📱 Responsive Design
+
+- Mobile-friendly interface
+- Modern and intuitive UI
+- Dark/Light theme support
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **React 19.1.1** - UI library
+- **React Router 7.9.4** - Routing
+- **Axios 1.12.2** - HTTP client
+- **Vite 7.1.7** - Build tool
+- **CSS3** - Styling
+
+### Backend
+
+- **Spring Boot 3.2.0** - Application framework
+- **Spring Data JPA** - Data persistence
+- **Spring Security** - Authentication & authorization
+- **JWT** - Token-based authentication
+- **MySQL 8.0** - Production database
+- **H2** - Development/testing database
+- **Maven** - Dependency management
+
+---
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Java 17** or higher - [Download](https://adoptium.net/)
+- **Maven 3.6+** - [Download](https://maven.apache.org/download.cgi)
+- **Node.js 16+** and npm - [Download](https://nodejs.org/)
+- **MySQL 8.0** - [Download](https://dev.mysql.com/downloads/mysql/)
+- **Git** - [Download](https://git-scm.com/downloads)
+
+### Check your installations:
+
+```powershell
+java -version       # Should show Java 17+
+mvn -version        # Should show Maven 3.6+
+node -version       # Should show Node 16+
+npm -version        # Should show npm 7+
+mysql --version     # Should show MySQL 8.0+
+```
+
+---
+
+## 🛠️ Installation & Setup
+
+### 1. Clone the Repository
+
+```powershell
+git clone https://github.com/NethumiJ/restaurant-management-system.git
+cd restaurant-management-system
+```
+
+### 2. Database Setup
+
+#### Option A: Using MySQL (Recommended for Production)
+
+1. **Start MySQL** and log in:
+
+```powershell
+mysql -u root -p
+```
+
+2. **Create the database**:
+
+```sql
+CREATE DATABASE inventory_db;
+exit;
+```
+
+3. **Update database credentials** in `backend/src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/inventory_db
+spring.datasource.username=root
+spring.datasource.password=YOUR_PASSWORD
+```
+
+#### Option B: Using Docker (Alternative)
+
+```powershell
+cd backend
 docker-compose up -d
 ```
 
-This will create a MySQL container with:
-- Database: `inventory_db`
-- Username: `root`
-- Password: `root`
-- Port: `3306`
+This will start MySQL in a Docker container with the correct configuration.
 
-### Option 2: Using XAMPP MySQL (Current Configuration)
+### 3. Backend Setup
 
-1. Start XAMPP and ensure MySQL is running
-2. The database `inventory_db` will be created automatically
-3. Current credentials configured:
-   - Username: `root`
-   - Password: `root1234`
-   - Port: `3306`
+```powershell
+cd backend
 
-If you need to change credentials, update `src/main/resources/application.properties`:
-```properties
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-```
-
-## Installation & Running
-
-1. **Clone the repository**
-```bash
-cd d:\react\Invent\backend
-```
-
-2. **Build the project**
-```bash
+# Install dependencies and build
 mvn clean install
+
+# The application will auto-create tables on first run
 ```
 
-3. **Run the application**
-```bash
+### 4. Frontend Setup
+
+```powershell
+# Navigate to project root
+cd ..
+
+# Install dependencies
+npm install
+```
+
+---
+
+## 🚀 Running the Application
+
+### 1. Start the Backend (Port 8080)
+
+```powershell
+cd backend
 mvn spring-boot:run
 ```
 
-The application will start on `http://localhost:8080`
+✅ Backend will be available at: **http://localhost:8080**
 
-## API Endpoints
-
-### Products
-
-- `GET /api/products` - Get all products
-- `GET /api/products?active=true` - Get active products only
-- `GET /api/products/{id}` - Get product by ID
-- `GET /api/products/sku/{sku}` - Get product by SKU
-- `GET /api/products/category/{categoryId}` - Get products by category
-- `GET /api/products/supplier/{supplierId}` - Get products by supplier
-- `GET /api/products/search?name={name}` - Search products by name
-- `GET /api/products/low-stock` - Get low stock products
-- `POST /api/products` - Create new product
-- `PUT /api/products/{id}` - Update product
-- `PATCH /api/products/{id}/stock?quantity={qty}` - Update stock
-- `DELETE /api/products/{id}` - Delete product
-
-### Categories
-
-- `GET /api/categories` - Get all categories
-- `GET /api/categories/{id}` - Get category by ID
-- `GET /api/categories/name/{name}` - Get category by name
-- `POST /api/categories` - Create new category
-- `PUT /api/categories/{id}` - Update category
-- `DELETE /api/categories/{id}` - Delete category
-
-### Suppliers
-
-- `GET /api/suppliers` - Get all suppliers
-- `GET /api/suppliers?active=true` - Get active suppliers only
-- `GET /api/suppliers/{id}` - Get supplier by ID
-- `GET /api/suppliers/search?name={name}` - Search suppliers by name
-- `POST /api/suppliers` - Create new supplier
-- `PUT /api/suppliers/{id}` - Update supplier
-- `DELETE /api/suppliers/{id}` - Delete supplier
-
-## Sample API Requests
-
-### Create a Category
-```json
-POST /api/categories
-{
-  "name": "Electronics",
-  "description": "Electronic devices and accessories"
-}
-```
-
-### Create a Supplier
-```json
-POST /api/suppliers
-{
-  "name": "Tech Supplies Inc.",
-  "contactPerson": "John Doe",
-  "email": "john@techsupplies.com",
-  "phone": "+1-234-567-8900",
-  "address": "123 Tech Street, Silicon Valley, CA",
-  "active": true
-}
-```
-
-### Create a Product
-```json
-POST /api/products
-{
-  "name": "Laptop",
-  "description": "High-performance laptop",
-  "sku": "LAPTOP-001",
-  "price": 1299.99,
-  "quantity": 50,
-  "reorderLevel": 10,
-  "category": {
-    "id": 1
-  },
-  "supplier": {
-    "id": 1
-  },
-  "imageUrl": "https://example.com/laptop.jpg",
-  "active": true
-}
-```
-
-## Project Structure
+You should see output like:
 
 ```
-backend/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/
-│   │   │       └── inventory/
-│   │   │           ├── InventoryApplication.java
-│   │   │           ├── config/
-│   │   │           │   └── WebConfig.java
-│   │   │           ├── controller/
-│   │   │           │   ├── ProductController.java
-│   │   │           │   ├── CategoryController.java
-│   │   │           │   └── SupplierController.java
-│   │   │           ├── model/
-│   │   │           │   ├── Product.java
-│   │   │           │   ├── Category.java
-│   │   │           │   └── Supplier.java
-│   │   │           ├── repository/
-│   │   │           │   ├── ProductRepository.java
-│   │   │           │   ├── CategoryRepository.java
-│   │   │           │   └── SupplierRepository.java
-│   │   │           ├── service/
-│   │   │           │   ├── ProductService.java
-│   │   │           │   ├── CategoryService.java
-│   │   │           │   └── SupplierService.java
-│   │   │           └── exception/
-│   │   │               ├── ErrorResponse.java
-│   │   │               └── GlobalExceptionHandler.java
-│   │   └── resources/
-│   │       └── application.properties
-│   └── test/
-├── docker-compose.yml
-├── pom.xml
-└── README.md
+Started InventoryApplication in X.XXX seconds
 ```
 
-## Configuration
+### 2. Start the Frontend (Port 5175)
 
-The application configuration is in `src/main/resources/application.properties`:
+Open a **new terminal** window:
 
-- **Server Port**: 8080
-- **Database URL**: jdbc:mysql://localhost:3306/inventory_db
-- **JPA**: Auto-create/update tables
-- **CORS**: Enabled for localhost:3000 and localhost:5173
+```powershell
+# Navigate to project root
+cd restaurant-management-system
 
-## Development
-
-### Enable Hot Reload
-The project includes Spring Boot DevTools for automatic restart during development.
-
-### Logging
-- Application logs are set to DEBUG level
-- SQL queries are logged with parameters
-
-## Stopping the Application
-
-1. Stop the Spring Boot application: `Ctrl + C`
-2. Stop Docker containers:
-```bash
-docker-compose down
+# Start development server
+npm run dev
 ```
 
-## Troubleshooting
+✅ Frontend will be available at: **http://localhost:5175**
 
-### Database Connection Issues
-- Ensure MySQL is running
-- Check database credentials in `application.properties`
-- Verify port 3306 is not in use by another service
+### 3. Access the Application
 
-### Port Already in Use
-If port 8080 is in use, change it in `application.properties`:
-```properties
-server.port=8081
+Open your browser and navigate to: **http://localhost:5175**
+
+#### Default Login Credentials:
+
+The system creates a default admin user on first run:
+
+- **Email**: `admin@inventory.com`
+- **Password**: `admin123`
+
+---
+
+## 📁 Project Structure
+
+```
+restaurant-management-system/
+├── backend/                          # Spring Boot backend
+│   ├── src/main/java/com/inventory/
+│   │   ├── config/                   # Security, JWT, CORS configuration
+│   │   ├── controller/               # REST API endpoints
+│   │   ├── dto/                      # Data Transfer Objects
+│   │   ├── exception/                # Exception handling
+│   │   ├── model/                    # Entity classes
+│   │   ├── repository/               # JPA repositories
+│   │   └── service/                  # Business logic
+│   ├── src/main/resources/
+│   │   └── application.properties    # Configuration
+│   ├── docker-compose.yml            # Docker MySQL setup
+│   └── pom.xml                       # Maven dependencies
+├── src/                              # React frontend
+│   ├── components/
+│   │   ├── admin/                    # Admin panel
+│   │   ├── analytics/                # Analytics dashboard
+│   │   ├── auth/                     # Authentication components
+│   │   ├── dashboard/                # Role-based dashboards
+│   │   └── signup/                   # User registration
+│   ├── contexts/                     # React contexts
+│   ├── services/                     # API service layer
+│   ├── App.jsx                       # Main app component
+│   └── main.jsx                      # Entry point
+├── public/                           # Static assets
+├── package.json                      # Frontend dependencies
+├── vite.config.js                    # Vite configuration
+└── README.md                         # This file
 ```
 
-## License
+---
 
-This project is open source and available under the MIT License.
+## 📡 API Documentation
 
-## Support
+### Authentication Endpoints
 
-For issues and questions, please create an issue in the repository.
+| Method | Endpoint            | Description       | Auth Required |
+| ------ | ------------------- | ----------------- | ------------- |
+| POST   | `/api/auth/signup`  | Register new user | No            |
+| POST   | `/api/auth/signin`  | User login        | No            |
+| POST   | `/api/auth/signout` | User logout       | Yes           |
+
+### Product Endpoints
+
+| Method | Endpoint                   | Description         | Auth Required |
+| ------ | -------------------------- | ------------------- | ------------- |
+| GET    | `/api/products`            | Get all products    | Yes           |
+| GET    | `/api/products/{id}`       | Get product by ID   | Yes           |
+| POST   | `/api/products`            | Create product      | Yes (Admin)   |
+| PUT    | `/api/products/{id}`       | Update product      | Yes (Admin)   |
+| PATCH  | `/api/products/{id}/stock` | Update stock        | Yes           |
+| DELETE | `/api/products/{id}`       | Delete product      | Yes (Admin)   |
+| GET    | `/api/products/low-stock`  | Get low stock items | Yes           |
+
+### Category Endpoints
+
+| Method | Endpoint               | Description        | Auth Required |
+| ------ | ---------------------- | ------------------ | ------------- |
+| GET    | `/api/categories`      | Get all categories | Yes           |
+| POST   | `/api/categories`      | Create category    | Yes (Admin)   |
+| PUT    | `/api/categories/{id}` | Update category    | Yes (Admin)   |
+| DELETE | `/api/categories/{id}` | Delete category    | Yes (Admin)   |
+
+### Supplier Endpoints
+
+| Method | Endpoint              | Description       | Auth Required |
+| ------ | --------------------- | ----------------- | ------------- |
+| GET    | `/api/suppliers`      | Get all suppliers | Yes           |
+| POST   | `/api/suppliers`      | Create supplier   | Yes (Admin)   |
+| PUT    | `/api/suppliers/{id}` | Update supplier   | Yes (Admin)   |
+| DELETE | `/api/suppliers/{id}` | Delete supplier   | Yes (Admin)   |
+
+### Order Endpoints
+
+| Method | Endpoint                  | Description         | Auth Required |
+| ------ | ------------------------- | ------------------- | ------------- |
+| GET    | `/api/orders`             | Get all orders      | Yes           |
+| GET    | `/api/orders/{id}`        | Get order by ID     | Yes           |
+| POST   | `/api/orders`             | Create order        | Yes           |
+| PUT    | `/api/orders/{id}/status` | Update order status | Yes           |
+
+### Statistics Endpoints
+
+| Method | Endpoint     | Description         | Auth Required |
+| ------ | ------------ | ------------------- | ------------- |
+| GET    | `/api/stats` | Get dashboard stats | Yes           |
+
+---
+
+## 📸 Screenshots
+
+### Login Page
+
+![Login Page](./screenshots/login.png)
+_User authentication with role-based access_
+
+### Admin Dashboard
+
+![Admin Dashboard](./screenshots/admin-dashboard.png)
+_Overview of system statistics and metrics_
+
+### Inventory Management
+
+![Inventory](./screenshots/inventory.png)
+_Manage products with stock tracking and alerts_
+
+### Order Management
+
+![Orders](./screenshots/orders.png)
+_Track and manage customer orders_
+
+### Analytics Dashboard
+
+![Analytics](./screenshots/analytics.png)
+_Visual reports and insights_
+
+### User Management
+
+![User Management](./screenshots/user-management.png)
+_Admin panel for managing users and roles_
+
+> **Note**: To add screenshots, create a `screenshots` folder in the project root and add your images there.
+
+---
+
+## 👥 User Roles
+
+### 🔴 Admin
+
+- Full system access
+- Manage users, products, categories, suppliers
+- View all analytics and reports
+- System configuration
+
+### 🟡 Manager
+
+- Inventory management
+- Order management
+- View analytics
+- Manage suppliers
+
+### 🟢 Cashier
+
+- Create orders
+- View inventory
+- Update order status
+- Basic reporting
+
+### 🔵 Chef
+
+- View orders
+- Update order status (cooking, ready)
+- View inventory
+
+---
+
+## 🔧 Troubleshooting
+
+### Backend Issues
+
+**Problem**: Backend won't start
+
+```powershell
+# Check if MySQL is running
+Get-Service MySQL*
+
+# Check if port 8080 is in use
+netstat -ano | findstr :8080
+
+# View backend logs
+mvn spring-boot:run
+```
+
+**Problem**: Database connection error
+
+- Verify MySQL is running
+- Check credentials in `application.properties`
+- Ensure database `inventory_db` exists
+
+### Frontend Issues
+
+**Problem**: Frontend won't start
+
+```powershell
+# Clear npm cache
+npm cache clean --force
+
+# Reinstall dependencies
+rm -rf node_modules
+npm install
+
+# Start dev server
+npm run dev
+```
+
+**Problem**: CORS errors
+
+- Ensure backend is running on port 8080
+- Check `WebConfig.java` for allowed origins
+- Verify API base URL in `src/services/api.js`
+
+### Common Issues
+
+**Problem**: "Cannot find module" errors
+
+```powershell
+npm install
+```
+
+**Problem**: Build failures
+
+```powershell
+# Backend
+mvn clean install -U
+
+# Frontend
+npm run build
+```
+
+**Problem**: JWT token expired
+
+- Log out and log in again
+- Check token expiration settings in `JwtUtil.java`
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Nethumi Jayasooriya**
+
+- GitHub: [@NethumiJ](https://github.com/NethumiJ)
+
+---
+
+## 🙏 Acknowledgments
+
+- React team for the amazing library
+- Spring Boot team for the robust framework
+- All contributors and supporters
+
+---
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [Troubleshooting](#-troubleshooting) section
+2. Search existing [Issues](https://github.com/NethumiJ/restaurant-management-system/issues)
+3. Create a new issue with detailed information
+
+---
+
+**Happy Coding! 🚀**
