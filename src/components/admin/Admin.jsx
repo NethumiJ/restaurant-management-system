@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import userService from '../../services/userService';
 import './Admin.css';
 
-const roles = ['ADMIN', 'MANAGER', 'CHEF', 'USER'];
+const roles = ['ADMIN', 'MANAGER', 'CHEF', 'CASHIER'];
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -15,11 +15,11 @@ const Admin = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', role: 'USER', active: true });
+  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', role: 'CASHIER', active: true });
 
   useEffect(() => {
-    if (!user || user.role !== 'ADMIN') {
-      // safety: if someone reaches here without admin role, send to dashboard
+    if (!user || (user.role !== 'MANAGER' && user.role !== 'ADMIN')) {
+      // safety: if someone reaches here without manager/admin role, send to dashboard
       navigate('/dashboard');
       return;
     }
@@ -41,13 +41,13 @@ const Admin = () => {
 
   const openCreate = () => {
     setEditing(null);
-    setForm({ firstName: '', lastName: '', email: '', password: '', role: 'USER', active: true });
+    setForm({ firstName: '', lastName: '', email: '', password: '', role: 'CASHIER', active: true });
     setModalOpen(true);
   };
 
   const openEdit = (u) => {
     setEditing(u);
-    setForm({ firstName: u.firstName || '', lastName: u.lastName || '', email: u.email || '', password: '', role: u.role || 'USER', active: u.active === undefined ? true : u.active });
+    setForm({ firstName: u.firstName || '', lastName: u.lastName || '', email: u.email || '', password: '', role: u.role || 'CASHIER', active: u.active === undefined ? true : u.active });
     setModalOpen(true);
   };
 

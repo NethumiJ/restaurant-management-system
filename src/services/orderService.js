@@ -1,8 +1,19 @@
 import api from './api';
 
 const orderService = {
-  getAll: async () => {
-    const res = await api.get('/orders');
+  getAll: async (type = null) => {
+    const params = type ? { type } : {};
+    const res = await api.get('/orders', { params });
+    return res.data;
+  },
+  
+  getCustomerOrders: async () => {
+    const res = await api.get('/orders/customer-orders');
+    return res.data;
+  },
+  
+  getPendingCustomerOrders: async () => {
+    const res = await api.get('/orders/customer-orders/pending');
     return res.data;
   },
   getById: async (id) => {
@@ -10,8 +21,16 @@ const orderService = {
     return res.data;
   },
   create: async (order) => {
-    const res = await api.post('/orders', order);
-    return res.data;
+    try {
+      console.debug('Creating order payload:', order);
+      const res = await api.post('/orders', order);
+      console.debug('Create order response:', res);
+      return res.data;
+    } catch (err) {
+      console.error('Order create failed:', err.response || err.message || err);
+      // rethrow so callers can handle it
+      throw err;
+    }
   },
   update: async (id, order) => {
     const res = await api.put(`/orders/${id}`, order);

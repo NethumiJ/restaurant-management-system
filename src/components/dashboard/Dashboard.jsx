@@ -34,10 +34,17 @@ const AddEditInventoryModal = ({ isOpen, onClose, item, onSave }) => {
     }
   }, [item]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
-    onClose();
+    try {
+      // Wait for parent onSave to complete so we can catch errors and only close on success
+      await onSave(formData);
+      onClose();
+    } catch (err) {
+      console.error('Failed to save order:', err);
+      // show a simple UI feedback; parent will also manage notifications when available
+      window.alert('Failed to save order: ' + (err.response?.data?.message || err.message || err));
+    }
   };
 
   if (!isOpen) return null;
@@ -421,7 +428,7 @@ const Dashboard = () => {
       setLoading(true);
       setError(null);
       
-      const [productsData, categoriesData, suppliersData, statsData, ordersData] = await Promise.all([
+      const [allProductsData, categoriesData, suppliersData, statsData, ordersData] = await Promise.all([
         productService.getAllProducts(),
         categoryService.getAllCategories(),
         supplierService.getAllSuppliers(),
@@ -429,8 +436,12 @@ const Dashboard = () => {
         orderService.getAll()
       ]);
       
-      // Map products to stockData format
-      const mappedProducts = productsData.map(product => ({
+      // Separate inventory items and menu items
+      const inventoryItems = allProductsData.filter(p => p.type === 'INVENTORY_ITEM');
+      const menuItems = allProductsData.filter(p => p.type === 'MENU_ITEM');
+      
+      // Map inventory items to stockData format
+      const mappedInventoryItems = inventoryItems.map(product => ({
         id: product.id,
         name: product.name,
         current: product.quantity || 0,
@@ -445,12 +456,26 @@ const Dashboard = () => {
         category: product.category?.name || 'Uncategorized'
       }));
       
-      setStockData(mappedProducts);
-  setMenuItems(mappedProducts); // Using same data for menu items for now
-  setCategories(categoriesData);
-  setSuppliers(suppliersData);
-  setStats(statsData);
-  setOrders(ordersData || []);
+      setStockData(mappedInventoryItems);
+      // Map menu items separately
+      const mappedMenuItems = menuItems.map(product => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        category: product.category?.name || 'Uncategorized',
+        popularity: typeof product.popularity === 'number' ? product.popularity : 0,
+        active: product.active !== undefined ? product.active : true
+      }));
+      setMenuItems(mappedMenuItems);
+      setCategories(categoriesData);
+      setSuppliers(suppliersData);
+      setStats(statsData);
+      // Debug: log orders returned from backend
+      console.debug('Fetched orders from backend:', ordersData ? ordersData.length : 0, ordersData);
+      if (ordersData && Array.isArray(ordersData)) {
+        console.debug('Order statuses:', ordersData.map(o => o.status));
+      }
+      setOrders(ordersData || []);
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Failed to load data from server. Using offline mode.');
@@ -504,7 +529,8 @@ const Dashboard = () => {
           name: formData.name.trim(),
           quantity: quantity,
           reorderLevel: isNaN(reorderLevel) ? 0 : reorderLevel,
-          price: price
+          price: price,
+          type: 'INVENTORY_ITEM' // Ensure it stays as inventory item
         };
         
         console.log('Updating product with ID:', editingItem.id, 'Data:', updateData);
@@ -514,10 +540,11 @@ const Dashboard = () => {
         // Create new product
         const productData = {
           name: formData.name.trim(),
-          sku: `SKU-${Date.now()}`,
+          sku: `INV-${Date.now()}`,
           quantity: quantity,
           reorderLevel: isNaN(reorderLevel) ? 0 : reorderLevel,
-          price: price
+          price: price,
+          type: 'INVENTORY_ITEM' // Ensure it's marked as inventory item
         };
         
         console.log('Creating product:', productData);
@@ -585,7 +612,8 @@ const Dashboard = () => {
         price: parseFloat(formData.price),
         quantity: 100, // Default quantity for menu items
         reorderLevel: 10,
-        active: formData.active !== undefined ? formData.active : true
+        active: formData.active !== undefined ? formData.active : true,
+        type: 'MENU_ITEM' // Ensure it's marked as menu item
       };
 
       if (editingItem) {
@@ -711,12 +739,29 @@ const Dashboard = () => {
                   if (!r) return 'User';
                   switch(r.toUpperCase()) {
                     case 'ADMIN': return 'Administrator';
-                    case 'MANAGER': return 'Manager';
+                    case 'MANAGER': return 'Restaurant Manager';
                     case 'CHEF': return 'Chef';
-                    case 'USER': return 'Staff';
+                    case 'CASHIER': return 'Cashier';
                     default: return r;
                   }
                 })(user?.role)}</div>
+                {(user?.role === 'MANAGER' || user?.role === 'ADMIN') && (
+                  <button 
+                    onClick={() => navigate('/admin')}
+                    style={{
+                      marginTop: '8px',
+                      padding: '6px 12px',
+                      fontSize: '12px',
+                      backgroundColor: '#2196F3',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Manage Staff
+                  </button>
+                )}
                 <button 
                   onClick={() => {
                     signOut();
@@ -907,10 +952,10 @@ const Dashboard = () => {
                           <span>View Reports</span>
                         </button>
                         <button className="quick-action-btn" onClick={() => {
-                          if (user?.role === 'ADMIN') {
+                          if (user?.role === 'MANAGER' || user?.role === 'ADMIN') {
                             navigate('/admin');
                           } else {
-                            alert('Only admins can access Staff Management');
+                            alert('Only managers and admins can access Staff Management');
                           }
                         }}>
                           <span className="action-icon">👥</span>

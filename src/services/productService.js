@@ -69,6 +69,41 @@ const productService = {
       throw error;
     }
   },
+
+  // Get inventory items (ingredients)
+  getInventoryItems: async () => {
+    try {
+      const response = await api.get('/products/inventory-items');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching inventory items:', error);
+      throw error;
+    }
+  },
+
+  // Get menu items (food items for sale)
+  getMenuItems: async (activeOnly = false) => {
+    try {
+      const response = await api.get('/products/menu-items', {
+        params: activeOnly ? { active: true } : {}
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching menu items:', error);
+      throw error;
+    }
+  },
+
+  // Get low stock inventory items
+  getLowStockInventoryItems: async () => {
+    try {
+      const response = await api.get('/products/inventory-items/low-stock');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching low stock inventory items:', error);
+      throw error;
+    }
+  },
 };
 
 export default productService;
