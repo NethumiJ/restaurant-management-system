@@ -58,8 +58,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.getLowStockProducts());
     }
     
-<<<<<<< HEAD
-=======
     @GetMapping("/inventory-items")
     public ResponseEntity<List<Product>> getInventoryItems() {
         return ResponseEntity.ok(productService.getInventoryItems());
@@ -78,7 +76,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.getLowStockInventoryItems());
     }
     
->>>>>>> backend
     @PostMapping
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
         return ResponseEntity.status(HttpStatus.CREATED)

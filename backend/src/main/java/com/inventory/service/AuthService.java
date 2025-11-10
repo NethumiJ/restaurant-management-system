@@ -30,16 +30,12 @@ public class AuthService {
         user.setEmail(request.getEmail());
         // In production, use BCrypt to hash password
         user.setPassword(encodePassword(request.getPassword()));
-<<<<<<< HEAD
-        user.setRole("USER");
-=======
         // Validate and set role (CHEF, CASHIER, MANAGER, or ADMIN)
         String role = request.getRole();
         if (role == null || (!role.equals("CHEF") && !role.equals("CASHIER") && !role.equals("MANAGER") && !role.equals("ADMIN"))) {
             role = "CASHIER"; // Default to CASHIER if invalid
         }
         user.setRole(role);
->>>>>>> backend
         user.setActive(true);
 
         User savedUser = userRepository.save(user);

@@ -52,8 +52,6 @@ public class ProductService {
                 .toList();
     }
     
-<<<<<<< HEAD
-=======
     public List<Product> getInventoryItems() {
         return productRepository.findByType("INVENTORY_ITEM");
     }
@@ -72,7 +70,6 @@ public class ProductService {
                 .toList();
     }
     
->>>>>>> backend
     @Transactional
     public Product createProduct(Product product) {
         if (productRepository.findBySku(product.getSku()).isPresent()) {
@@ -112,12 +109,9 @@ public class ProductService {
         if (productDetails.getActive() != null) {
             product.setActive(productDetails.getActive());
         }
-<<<<<<< HEAD
-=======
         if (productDetails.getType() != null) {
             product.setType(productDetails.getType());
         }
->>>>>>> backend
 
         return productRepository.save(product);
     }
